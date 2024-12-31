@@ -1,6 +1,7 @@
 import asyncio
 from os import environ
 from pyrogram import Client, filters, idle
+from pyrogram.errors import FloodWait
 
 API_ID = int(environ.get("API_ID"))
 API_HASH = environ.get("API_HASH")
@@ -45,6 +46,10 @@ async def delete(user, message):
        else:
           await asyncio.sleep(TIME)
           await Bot.delete_messages(message.chat.id, message.id)
+    except FloodWait as e:
+        print(f"Rate limit hit. Sleeping for {e.x} seconds.")
+        await asyncio.sleep(e.x) 
+        await Bot.delete_messages(message.chat.id, message.id)
     except Exception as e:
        print(e)
        
