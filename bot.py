@@ -54,7 +54,7 @@ async def delete(user, message):
         await Bot.delete_messages(message.chat.id, message.id)
     except Exception as e:
        print(e)
-Popen(f"gunicorn utils.server:app --bind 0.0.0.0:{PORT}", shell=True)      
+Popen(f"gunicorn app:app --bind 0.0.0.0:{PORT}", shell=True)      
 User.start()
 print("User Started!")
 Bot.start()
