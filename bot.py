@@ -2,12 +2,14 @@ import asyncio
 from os import environ
 from pyrogram import Client, filters, idle
 from pyrogram.errors import FloodWait
+from subprocess import Popen
 
 API_ID = int(environ.get("API_ID"))
 API_HASH = environ.get("API_HASH")
 BOT_TOKEN = environ.get("BOT_TOKEN")
 SESSION = environ.get("SESSION")
 TIME = int(environ.get("TIME"))
+PORT = 8080
 GROUPS = []
 for grp in environ.get("GROUPS").split():
     GROUPS.append(int(grp))
@@ -52,7 +54,7 @@ async def delete(user, message):
         await Bot.delete_messages(message.chat.id, message.id)
     except Exception as e:
        print(e)
-       
+Popen(f"gunicorn utils.server:app --bind 0.0.0.0:{PORT}", shell=True)      
 User.start()
 print("User Started!")
 Bot.start()
